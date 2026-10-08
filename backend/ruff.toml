@@ -1,0 +1,25 @@
+# Ruff — fast Python linter + formatter (replaces flake8, isort, black)
+target-version = "py311"
+line-length = 100
+
+[lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "UP",  # pyupgrade
+]
+ignore = [
+    "E501",  # line too long (handled by formatter)
+    "B008",  # do not perform function calls in default args (FastAPI Depends pattern)
+]
+
+[lint.per-file-ignores]
+"tests/*" = ["S101"]   # allow assert in tests
+"alembic/*" = ["F401"] # allow unused imports in migrations
+
+[format]
+quote-style = "double"
+indent-style = "space"

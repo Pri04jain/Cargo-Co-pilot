@@ -1,0 +1,52 @@
+# Environment — NEVER commit secrets
+.env
+*.env.local
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+
+# Node / frontend
+node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Docker volumes (don't commit data)
+postgres_data/
+upload_data/
+
+# Uploaded files — store in object storage in production
+data/uploads/
+*.pdf
+*.tiff
+*.tif
+# But keep synthetic generated files (they're part of the eval set)
+!data/synthetic/*.pdf
+!data/synthetic/*.png
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# macOS
+.DS_Store
+
+# Eval reports (generated — don't commit)
+eval/reports/*.md
+eval/reports/*.json
+# Keep the placeholder
+!eval/reports/.gitkeep
+
+# Logs
+*.log
+logs/

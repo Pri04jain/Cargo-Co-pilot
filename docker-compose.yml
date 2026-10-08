@@ -1,0 +1,102 @@
+version: "3.9"
+
+services:
+  # ── PostgreSQL + pgvector ───────────────────────────────────────────────────
+  db:
+    image: pgvector/pgvector:pg16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-cargo}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-cargo_secret}
+      POSTGRES_DB: ${POSTGRES_DB:-cargo_copilot}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/init_db.sql:/docker-entrypoint-initdb.d/init_db.sql:ro
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-cargo}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # ── Redis (Celery broker + result backend) ──────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # ── FastAPI backend ─────────────────────────────────────────────────────────
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-cargo}:${POSTGRES_PASSWORD:-cargo_secret}@db:5432/${POSTGRES_DB:-cargo_copilot}
+      DATABASE_URL_SYNC: postgresql://${POSTGRES_USER:-cargo}:${POSTGRES_PASSWORD:-cargo_secret}@db:5432/${POSTGRES_DB:-cargo_copilot}
+      REDIS_URL: redis://redis:6379/0
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/1
+      UPLOAD_DIR: /data/uploads
+    volumes:
+      - upload_data:/data/uploads
+      - ./prompts:/app/prompts:ro
+      - ./rules:/app/rules:ro
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  # ── Celery worker ───────────────────────────────────────────────────────────
+  worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-cargo}:${POSTGRES_PASSWORD:-cargo_secret}@db:5432/${POSTGRES_DB:-cargo_copilot}
+      DATABASE_URL_SYNC: postgresql://${POSTGRES_USER:-cargo}:${POSTGRES_PASSWORD:-cargo_secret}@db:5432/${POSTGRES_DB:-cargo_copilot}
+      REDIS_URL: redis://redis:6379/0
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/1
+      UPLOAD_DIR: /data/uploads
+    volumes:
+      - upload_data:/data/uploads
+      - ./prompts:/app/prompts:ro
+      - ./rules:/app/rules:ro
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: celery -A app.workers.celery_app worker --loglevel=info --concurrency=2
+
+  # ── React frontend ──────────────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      VITE_API_URL: http://localhost:8000
+    ports:
+      - "5173:5173"
+    depends_on:
+      - api
+
+volumes:
+  postgres_data:
+  upload_data:

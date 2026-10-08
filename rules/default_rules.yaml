@@ -1,0 +1,70 @@
+# Cargo Copilot — Default Routing Rules
+# ──────────────────────────────────────────────────────────────────────────────
+# Rules are evaluated in priority order (lowest number wins).
+# The first rule whose `when` condition is true sets the decision.
+# The `default` rule at the end is a catch-all.
+#
+# Available context variables:
+#   validation.error_count    — number of ERROR-severity validation failures
+#   validation.warning_count  — number of WARNING-severity failures
+#   invoice.total_amount      — extracted invoice total
+#   po.total_amount           — matched purchase order total
+#   invoice.currency          — extracted currency code
+#   po.currency               — PO currency code
+#   doc.grounding_rate        — fraction of fields that are grounded (0–1)
+#   doc.overall_confidence    — average field confidence (0–1)
+#
+# Functions:
+#   pct_diff(a, b)  — |a - b| / b * 100  (percentage difference)
+#   abs(x)          — absolute value
+
+version: 1
+rules:
+  - id: validation_errors
+    priority: 1
+    when: "validation.error_count > 0"
+    then:
+      decision: exception_queue
+      reason: "Document has {validation.error_count} validation error(s) — manual review required"
+
+  - id: low_grounding
+    priority: 2
+    when: "doc.grounding_rate < 0.5"
+    then:
+      decision: exception_queue
+      reason: "Less than 50% of fields could be grounded in the document text"
+
+  - id: currency_mismatch
+    priority: 3
+    when: "invoice.currency != po.currency"
+    then:
+      decision: exception_queue
+      reason: "Currency mismatch: invoice is {invoice.currency}, PO is {po.currency}"
+
+  - id: po_amount_within_tolerance
+    priority: 4
+    when: "pct_diff(invoice.total_amount, po.total_amount) <= 2"
+    then:
+      decision: auto_approve
+      reason: "Invoice total is within 2% of PO amount"
+
+  - id: po_amount_manager_review
+    priority: 5
+    when: "pct_diff(invoice.total_amount, po.total_amount) <= 10"
+    then:
+      decision: manager_approval
+      reason: "Invoice total differs from PO by {pct_diff(invoice.total_amount, po.total_amount):.1f}% (between 2% and 10%)"
+
+  - id: no_po_reference
+    priority: 6
+    when: "po.total_amount == null"
+    then:
+      decision: exception_queue
+      reason: "No matching Purchase Order found for this invoice"
+
+  - id: default
+    priority: 99
+    when: "true"
+    then:
+      decision: exception_queue
+      reason: "No routing rule matched — defaulting to manual review"
