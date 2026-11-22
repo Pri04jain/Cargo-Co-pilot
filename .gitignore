@@ -1,0 +1,51 @@
+# Environment — NEVER commit secrets
+.env
+*.env.local
+.env.*.local
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+
+# Node / frontend
+node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Docker volumes (don't commit data)
+postgres_data/
+upload_data/
+
+# Uploaded files — store in object storage in production
+data/uploads/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# macOS
+.DS_Store
+.kiro-backup-pre-fix/
+
+# Eval reports (generated — don't commit)
+eval/reports/*.md
+eval/reports/*.json
+# Keep the placeholder
+!eval/reports/.gitkeep
+
+# Logs
+*.log
+logs/
+
+# Login credentials — never commit
+LOGIN_CREDENTIALS.txt
