@@ -1,0 +1,28 @@
+# Evaluation Framework Dependencies
+# Install with: pip install -r eval/requirements.txt
+
+# Core evaluation dependencies
+matplotlib==3.8.2
+seaborn==0.13.1
+plotly==5.17.0
+pandas==2.1.4
+numpy==1.26.2
+
+# Additional visualization
+kaleido==0.2.1           # Plotly static image export
+jinja2==3.1.3            # Template rendering for reports
+
+# Statistical analysis
+scipy==1.11.4            # Statistical functions
+scikit-learn==1.3.2      # ML metrics and utilities
+
+# Progress bars and CLI enhancements
+tqdm==4.66.1             # Progress bars for evaluation runs
+rich==13.7.0             # Rich console output and progress
+
+# Data format support
+openpyxl==3.1.2          # Excel export for evaluation results
+xlsxwriter==3.1.9        # Excel formatting
+
+# Note: Core dependencies (langfuse, structlog, httpx, pydantic) 
+# are already included in backend/requirements.txt

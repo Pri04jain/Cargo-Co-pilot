@@ -1,0 +1,93 @@
+{
+  "_comment": "This is a template for creating labeled test data for evaluation",
+  "_comment2": "Copy this file and fill in real values for your test documents",
+  "_comment3": "The file_path must point to an actual PDF or image document",
+  
+  "document_id": "test_bl_001",
+  "file_path": "data/test_documents/bill_of_lading_001.pdf",
+  
+  "ground_truth": {
+    "doc_type": "bill_of_lading",
+    
+    "fields": {
+      "bl_number": {
+        "value": "MAEU123456789",
+        "page": 1
+      },
+      "vessel": {
+        "value": "MSC OSCAR",
+        "page": 1
+      },
+      "voyage_number": {
+        "value": "123W",
+        "page": 1
+      },
+      "port_of_loading": {
+        "value": "Shanghai",
+        "page": 1
+      },
+      "port_of_discharge": {
+        "value": "Los Angeles",
+        "page": 1
+      },
+      "shipper": {
+        "name": {
+          "value": "Global Exports Ltd",
+          "page": 1
+        },
+        "address": {
+          "value": "123 Export Street, Shanghai, China",
+          "page": 1
+        }
+      },
+      "consignee": {
+        "name": {
+          "value": "US Imports Inc",
+          "page": 1
+        }
+      },
+      "notify_party": {
+        "name": {
+          "value": "US Imports Inc",
+          "page": 1
+        }
+      },
+      "place_of_receipt": {
+        "value": "Shanghai",
+        "page": 1
+      },
+      "place_of_delivery": {
+        "value": "Los Angeles",
+        "page": 1
+      },
+      "container_numbers": {
+        "value": ["MAEU1234567", "MAEU2345678"],
+        "page": 1
+      },
+      "cargo_description": {
+        "value": "Electronics Components",
+        "page": 1
+      },
+      "gross_weight": {
+        "value": "15,000 kg",
+        "page": 1
+      },
+      "freight_terms": {
+        "value": "Prepaid",
+        "page": 1
+      },
+      "number_of_originals": {
+        "value": "3",
+        "page": 1
+      },
+      "date_of_issue": {
+        "value": "2024-01-15",
+        "page": 1
+      },
+      "place_of_issue": {
+        "value": "Shanghai",
+        "page": 1
+      }
+    }
+  }
+}

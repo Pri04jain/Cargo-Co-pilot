@@ -1,0 +1,102 @@
+{
+  "_comment": "Template for commercial invoice ground truth labels",
+  
+  "document_id": "test_invoice_001",
+  "file_path": "data/test_documents/commercial_invoice_001.pdf",
+  
+  "ground_truth": {
+    "doc_type": "commercial_invoice",
+    
+    "fields": {
+      "invoice_number": {
+        "value": "INV-2024-001",
+        "page": 1
+      },
+      "invoice_date": {
+        "value": "2024-01-15",
+        "page": 1
+      },
+      "seller": {
+        "name": {
+          "value": "Electronics Corp",
+          "page": 1
+        },
+        "address": {
+          "value": "456 Tech Avenue, Shenzhen, China",
+          "page": 1
+        },
+        "tax_id": {
+          "value": "CN123456789",
+          "page": 1
+        }
+      },
+      "buyer": {
+        "name": {
+          "value": "Tech Retail USA",
+          "page": 1
+        },
+        "address": {
+          "value": "789 Market Street, San Francisco, CA 94102",
+          "page": 1
+        }
+      },
+      "currency": {
+        "value": "USD",
+        "page": 1
+      },
+      "payment_terms": {
+        "value": "NET 30",
+        "page": 1
+      },
+      "incoterms": {
+        "value": "FOB Shanghai",
+        "page": 1
+      },
+      "line_items": {
+        "value": [
+          {
+            "description": "Laptop Computer Model X100",
+            "quantity": 100,
+            "unit_price": 450.00,
+            "total": 45000.00
+          },
+          {
+            "description": "Wireless Mouse Model M200",
+            "quantity": 200,
+            "unit_price": 12.50,
+            "total": 2500.00
+          }
+        ],
+        "page": 1
+      },
+      "subtotal": {
+        "value": "47,500.00",
+        "page": 1
+      },
+      "tax_amount": {
+        "value": "0.00",
+        "page": 1
+      },
+      "total_amount": {
+        "value": "47,500.00",
+        "page": 1
+      },
+      "shipping_marks": {
+        "value": "TECH-USA-2024-001",
+        "page": 1
+      },
+      "port_of_loading": {
+        "value": "Shanghai",
+        "page": 1
+      },
+      "port_of_discharge": {
+        "value": "San Francisco",
+        "page": 1
+      },
+      "country_of_origin": {
+        "value": "China",
+        "page": 1
+      }
+    }
+  }
+}

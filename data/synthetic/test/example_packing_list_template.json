@@ -1,0 +1,94 @@
+{
+  "_comment": "Template for packing list ground truth labels",
+  
+  "document_id": "test_packing_001",
+  "file_path": "data/test_documents/packing_list_001.pdf",
+  
+  "ground_truth": {
+    "doc_type": "packing_list",
+    
+    "fields": {
+      "packing_list_number": {
+        "value": "PL-2024-001",
+        "page": 1
+      },
+      "packing_list_date": {
+        "value": "2024-01-15",
+        "page": 1
+      },
+      "shipper": {
+        "name": {
+          "value": "Electronics Corp",
+          "page": 1
+        }
+      },
+      "consignee": {
+        "name": {
+          "value": "Tech Retail USA",
+          "page": 1
+        }
+      },
+      "invoice_number": {
+        "value": "INV-2024-001",
+        "page": 1
+      },
+      "bl_number": {
+        "value": "MAEU123456789",
+        "page": 1
+      },
+      "total_packages": {
+        "value": "24",
+        "page": 1
+      },
+      "packaging_type": {
+        "value": "Cartons",
+        "page": 1
+      },
+      "total_gross_weight": {
+        "value": "1,250 kg",
+        "page": 1
+      },
+      "total_net_weight": {
+        "value": "1,150 kg",
+        "page": 1
+      },
+      "total_volume": {
+        "value": "15.5 CBM",
+        "page": 1
+      },
+      "items": {
+        "value": [
+          {
+            "package_numbers": "1-10",
+            "description": "Laptop Computer Model X100",
+            "quantity": 100,
+            "gross_weight": "550 kg",
+            "net_weight": "500 kg",
+            "dimensions": "60x40x35 cm"
+          },
+          {
+            "package_numbers": "11-24",
+            "description": "Wireless Mouse Model M200",
+            "quantity": 200,
+            "gross_weight": "700 kg",
+            "net_weight": "650 kg",
+            "dimensions": "50x40x30 cm"
+          }
+        ],
+        "page": 1
+      },
+      "shipping_marks": {
+        "value": "TECH-USA-2024-001",
+        "page": 1
+      },
+      "container_numbers": {
+        "value": ["MAEU1234567"],
+        "page": 1
+      },
+      "seal_numbers": {
+        "value": ["SEAL123456"],
+        "page": 1
+      }
+    }
+  }
+}
